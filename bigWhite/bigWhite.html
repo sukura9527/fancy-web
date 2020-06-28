@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                background-color: #000;
+            }
+            .bigWhite {
+                width: 10%;
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+            }
+            img {
+                width: 100%;
+            }
+            .move {
+                filter: drop-shadow(5px 5px 10px red);
+                transition: filter 1s;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="bigWhite">
+            <img src="images/bigWhite.png" alt="大白(●—●)" draggable="false" />
+        </div>
+        <script>
+            const bigWhite = document.getElementsByClassName("bigWhite")[0];
+            let W = window.innerWidth,
+                H = window.innerHeight,
+                w = bigWhite.offsetWidth,
+                h = bigWhite.offsetHeight,
+                x = bigWhite.style.left,
+                y = bigWhite.style.top,
+                vx,
+                vy,
+                fx,
+                fy,
+                Fx,
+                Fy,
+                frameT = (1000 / 30).toFixed(2),
+                F;
+            /* 实时检测屏幕宽高 */
+            window.onresize = resize;
+            function resize() {
+                W = window.innerWidth;
+                H = window.innerHeight;
+                /* console.log(W, H, x, y); */
+            }
+            requestAnimationFrame(update);
+            function update() {
+                touch(); /* 检测是否触界 */
+                calculatePull(); /* 计算拉力 */
+                calculateFriction(); /* 计算摩擦力 */
+                calculateVelocity(); /* 计算速度 */
+                setPosition(); /* 元素定位 */
+                requestAnimationFrame(update);
+            }
+
+            function touch() {
+                if (x < 0) {
+                    x = 0;
+                    vx = -vx * 0.8;
+                } else if (x + w > W) {
+                    x = W - w;
+                    vx = -vx * 0.8;
+                }
+                if (y < 0) {
+                    y = 0;
+                    vy = -vy * 0.8;
+                } else if (y + h > H) {
+                    y = H - h;
+                    vy = -vy * 0.8;
+                }
+            }
+            function calculatePull() {
+                bigWhite.onmousedown = function () {
+                    /*  e = e || window.event;
+                    x0 = e.pageX;
+                    y0 = e.pageY; */
+                    bigWhite.onmousemove = function (e) {
+                        e = e || window.event;
+                        posX = `${e.pageX}px`;
+                        posY = `${e.pageY}px`;
+                        bigWhite.classList.add("move");
+                        console.log(x, y);
+                    };
+                    bigWhite.onmouseup = function (e) {
+                        bigWhite.onmousemove = null;
+                        bigWhite.classList.remove("move");
+                        e = e || window.event;
+                        x1 = e.pageX;
+                        y1 = e.pageY;
+                        /* console.log(x0, y0, x1, y1); */
+                        var k = 0.05 /* 弹簧系数 */,
+                            dx = x1 - x,
+                            dy = y0 - y,
+                            Fx = dx * k,
+                            Fy = dy * k;
+                        F = Math.ceil(
+                            Math.sqrt(Math.pow(Fx, 2) + Math.pow(Fy, 2))
+                        );
+                    };
+                };
+            }
+            function calculateFriction() {
+                var mg = 10 /* 重力 */,
+                    u = 0.5 /* 摩擦系数 */,
+                    V = Math.ceil(Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2))),
+                    fx = V > 0 ? -(vx / V) * u : F > 0 ? -(Fx / F) * u : 0;
+                fy = V > 0 ? -(vy / V) * u : F > 0 ? -(Fy / F) * u : 0;
+            }
+            function calculateVelocity() {
+                if (
+                    Math.abs(fx) > Math.abs(Fx) &&
+                    Math.abs(vx) < Math.abs(frameT * (fx + Fx))
+                ) {
+                    vx = 0;
+                } else {
+                    vx += frameT * (fx + Fx);
+                }
+                if (
+                    Math.abs(fy) > Math.abs(Fy) &&
+                    Math.abs(vy) < Math.abs(frameT * (fy + Fy))
+                ) {
+                    vy = 0;
+                } else {
+                    vy += frameT * (fy + Fy);
+                }
+            }
+            function setPosition() {
+                x += vx * frameT;
+                y += vy * frameT;
+            }
+        </script>
+    </body>
+</html>

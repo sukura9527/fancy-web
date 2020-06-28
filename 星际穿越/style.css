@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #000;
+}
+
+#sky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    perspective: 500px;
+    perspective-origin: center center;
+}
+
+#sky div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+    border-radius: 50%;
+    transform: translateZ(-4500px);
+}
+
+@-webkit-keyframes move {
+    from {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateZ(500px);
+    }
+}
+
+@keyframes move {
+    from {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateZ(500px);
+    }
+}

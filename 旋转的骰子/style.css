@@ -1,0 +1,227 @@
+html {
+    background-color: black;
+    font-size: 100px;
+    padding: 2em;
+}
+
+.cube {
+    position: relative;
+    transform: rotateX(-45deg) rotateY(45deg);
+    transform: translateX();
+    /*         transform-style: preserve-3d; */
+}
+
+.dice,
+.vertical,
+.horizontal,
+.cube {
+    width: 100px;
+    height: 100px;
+}
+
+.vertical,
+.horizontal,
+.cube,
+.face {
+    transform-style: preserve-3d;
+}
+
+.face {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 15px;
+    background-color: white;
+    border-radius: 40%;
+    box-shadow: inset 0 0 20px #ccc;
+    display: flex;
+    /*     transform-style: preserve-3d; */
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-color: #444;
+    border-radius: 50%;
+    box-shadow: inset 5px 5px 10px black;
+}
+
+.face.one {
+    align-items: center;
+    justify-content: center;
+}
+
+.face.two {
+    justify-content: space-around;
+}
+
+.face.two .dot:nth-child(2) {
+    align-self: flex-end;
+}
+
+.face.three {
+    justify-content: space-around;
+}
+
+.face.three .dot:nth-child(2) {
+    align-self: center;
+}
+
+.face.three .dot:nth-child(3) {
+    align-self: flex-end;
+}
+
+.face.four {
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.face.four .dot-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.face.five {
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.face.five .dot-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.face.five .dot-row:nth-child(2) {
+    justify-content: center;
+}
+
+.face.six {
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.face.six .dot-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.face.font {
+    transform: translateZ(50px);
+}
+
+.face.back {
+    transform: translateZ(-50px) rotateY(180deg);
+}
+
+.face.up {
+    transform: translateY(-50%) rotateX(90deg);
+}
+
+.face.down {
+    transform: translateY(50%) rotateX(-90deg);
+}
+
+.face.left {
+    transform: translateX(-50%) rotateY(90deg);
+}
+
+.face.right {
+    transform: translateX(50%) rotateY(-90deg);
+}
+
+.clapboard {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #e0e0e0;
+    /*   background-color: red; */
+}
+
+.clapboard:nth-child(1) {
+    transform: rotateX(90deg);
+}
+
+.clapboard:nth-child(2) {
+    transform: rotateY(90deg);
+}
+
+.clapboard:nth-child(3) {
+    transform: rotateZ(90deg);
+}
+
+.face::after {
+    content: "";
+    display: block;
+    border-radius: 20px;
+    transform: translateZ(-1px);
+    background-color: #e0e0e0;
+    /*  background-color: green; */
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100px;
+    height: 100px;
+}
+
+.face.left::after,
+.face.right::after {
+    transform: translateZ(1px);
+}
+
+.vertical {
+    animation: rotateX 5s infinite linear;
+}
+
+.horizontal {
+    animation: rotateY 5s infinite linear;
+}
+
+@keyframes rotateX {
+    from {
+        transform: rotateX(0);
+    }
+    to {
+        transform: rotateX(360deg);
+    }
+}
+
+@keyframes rotateY {
+    from {
+        transform: rotateY(0);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+._vertical {
+    animation: _rotateX 5s infinite linear;
+}
+
+._horizontal {
+    animation: _rotateY 5s infinite linear;
+}
+
+@keyframes _rotateX {
+    from {
+        transform: rotateX(360deg);
+    }
+    to {
+        transform: rotateX(0);
+    }
+}
+
+@keyframes _rotateY {
+    from {
+        transform: rotateY(360deg);
+    }
+    to {
+        transform: rotateY(0);
+    }
+}
