@@ -1,177 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-		<link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width,initial-scale=1,user-scalable=no"
-		/>
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="mobile-web-app-capable" content="yes" />
-		<meta name="full-screen" content="true" />
-		<meta name="x5-fullscreen" content="true" />
-		<meta name="360-fullscreen" content="true" />
-		<meta http-equiv="Expires" content="0" />
-		<meta http-equiv="Pragma" content="no-cache" />
-		<meta http-equiv="Cache-control" content="no-cache" />
-		<meta http-equiv="Cache" content="no-cache" />
-		<title>水波纹进度条实现原理</title>
-	</head>
-	<style type="text/css">
-		* {
-			margin: 0;
-			padding: 0;
-		}
-		body {
-			background: #dbeff2;
-		}
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,user-scalable=no"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="full-screen" content="true" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="360-fullscreen" content="true" />
+        <meta http-equiv="Expires" content="0" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Cache-control" content="no-cache" />
+        <meta http-equiv="Cache" content="no-cache" />
+        <title>水波纹进度条</title>
+    </head>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ffffff;
+            font-family: serif;
+        }
 
-		canvas {
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate3d(-50%, -50%, 0);
-			-webkit-transform: translate3d(-50%, -50%, 0);
-		}
+        canvas {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            -webkit-transform: translate3d(-50%, -50%, 0);
+        }
 
-		.proNum {
-			font-size: 3rem;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			color: rgb(250, 225, 6);
-			transform: translate3d(-50%, -50%, 0);
-			-webkit-transform: translate3d(-50%, -50%, 0);
-			font-weight: bold;
-		}
-	</style>
+        .proNum {
+            font-size: 3rem;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            color: rgb(250, 225, 6);
+            transform: translate3d(-50%, -50%, 0);
+            -webkit-transform: translate3d(-50%, -50%, 0);
+            font-weight: bold;
+        }
+    </style>
 
-	<body>
-		<canvas id="canvas"></canvas>
-		<span class="proNum">0%</span>
+    <body>
+        <canvas id="canvas"></canvas>
+        <span class="proNum">0%</span>
+        <script>
+            var wave = {
+                speed: 50, //波浪横向流动速度
+                offsetX: 0, //波浪横向偏移量
+                isDrawContainer: false, //判断是否画了容器
+                offsetYRange: 0.8, //波浪垂直方向最大范围
+                offsetY: 0, //波浪垂直方向位移
+                offsetYSpeed: 0.003, //波浪溢满
+                progressNum: 0, //进度
+                flagNum: 80,
+                init: function () {
+                    var canvas = document.getElementById("canvas"),
+                        winW = document.body.clientWidth;
+                    this.ctx = canvas.getContext("2d");
+                    canvas.width = winW * 0.25;
+                    canvas.height = winW * 0.25;
+                    this.canvasW = canvas.width;
+                    this.draw();
+                },
 
-		<script>
-			var wave = {
-				speed: 50, //波浪横向流动速度
-				offsetX: 0, //波浪横向偏移量
-				isDrawContainer: false, //判断是否画了容器
-				offsetYRange: 1.1, //波浪垂直方向最大范围
-				offsetY: 0, //波浪垂直方向位移
-				offsetYSpeed: 0.003, //波浪溢满
-				progressNum: 0, //进度
-				init: function () {
-					var canvas = document.getElementById('canvas'),
-						winW = document.body.clientWidth;
+                //所有绘制
+                draw: function () {
+                    var ctx = this.ctx;
+                    ctx.clearRect(0, 0, this.canvasW, this.canvasW);
+                    this.offsetX += this.speed;
+                    if (!this.isDrawContainer) {
+                        this.drawContainer(ctx);
+                    }
+                    this.drawWave(
+                        ctx,
+                        this.offsetX,
+                        this.offsetY,
+                        0.04,
+                        6,
+                        "#a4def6"
+                    );
+                    this.drawWave(
+                        ctx,
+                        this.offsetX + 2,
+                        this.offsetY - 0.04,
+                        0.04,
+                        8,
+                        "#79d4f9"
+                    );
+                    if (this.offsetY < this.offsetYRange) {
+                        this.offsetY += this.offsetYSpeed;
+                        this.progressNum +=
+                            this.flagNum /
+                            (this.offsetYRange / this.offsetYSpeed);
+                        document.querySelector(".proNum").innerHTML =
+                            parseInt(this.progressNum) + "%";
+                    }
+                    this.renderCircle(ctx);
+                    window.requestAnimationFrame(() => this.draw());
+                },
 
-					this.ctx = canvas.getContext('2d');
-					canvas.width = winW * 0.3;
-					canvas.height = winW * 0.3;
-
-					this.canvasW = canvas.width;
-
-					this.draw();
-				},
-
-				//所有绘制
-				draw: function () {
-					var ctx = this.ctx;
-
-					ctx.clearRect(0, 0, this.canvasW, this.canvasW);
-					this.offsetX += this.speed;
-
-					if (!this.isDrawContainer) {
-						this.drawContainer(ctx);
-					}
-
-					this.drawWave(
-						ctx,
-						this.offsetX,
-						this.offsetY,
-						0.04,
-						6,
-						'#a4def6'
-					);
-					this.drawWave(
-						ctx,
-						this.offsetX + 2,
-						this.offsetY - 0.02,
-						0.04,
-						8,
-						'#79d4f9'
-					);
-
-					if (this.offsetY < this.offsetYRange) {
-						this.offsetY += this.offsetYSpeed;
-
-						this.progressNum +=
-							100 / (this.offsetYRange / this.offsetYSpeed);
-
-						document.querySelector('.proNum').innerHTML =
-							parseInt(this.progressNum) + '%';
-					}
-					this.renderCircle(ctx);
-					window.webkitRequestAnimationFrame(() => this.draw());
-				},
-
-				drawContainer: function (ctx) {
-					var pointR = this.canvasW / 2;
-					ctx.beginPath();
-					ctx.arc(pointR, pointR, pointR, 0, 2 * Math.PI);
-					ctx.clip();
-					this.isDrawContainer = true;
-				},
-				renderCircle: function (ctx) {
-					var angel = (this.progressNum / 100) * Math.PI * 2;
-					ctx.strokeStyle = 'red';
-					ctx.lineWidth = 15;
-					ctx.lineCap = 'round';
-					ctx.beginPath();
-					ctx.arc(
-						canvas.width / 2,
-						canvas.height / 2,
-						this.canvasW / 2 - 7.5,
-						-Math.PI / 2,
-						angel - Math.PI / 2,
-						false
-					);
-					ctx.stroke();
-				},
-				//画波浪线
-				drawWave: function (
-					ctx,
-					offsetX,
-					offsetY,
-					waveW,
-					waveH,
-					color
-				) {
-					var canvasW = this.canvasW,
-						startX = 0; //波浪线初始x轴坐标
-					ctx.beginPath();
-					var startPos = [startX];
-					for (var x = startX; x < canvasW; x += 20 / canvasW) {
-						//正弦曲线公式：y=Asin(ωx+φ)+k
-						var y =
-							(1 - offsetY) * canvasW +
-							waveH * Math.sin((startX + x) * waveW + offsetX);
-						if (startPos.length == 1) {
-							startPos.push(y);
-						}
-						ctx.lineTo(x, y);
-					}
-					//画出完整的波浪形状
-					ctx.lineTo(canvasW, canvasW);
-					ctx.lineTo(startX, canvasW);
-					ctx.lineTo(startPos[0], startPos[1]);
-					ctx.fillStyle = color;
-					ctx.fill();
-				},
-			};
-			wave.init();
-		</script>
-	</body>
+                drawContainer: function (ctx) {
+                    var pointR = this.canvasW / 2;
+                    ctx.beginPath();
+                    ctx.arc(pointR, pointR, pointR, 0, 2 * Math.PI);
+                    ctx.clip();
+                    this.isDrawContainer = true;
+                },
+                renderCircle: function (ctx) {
+                    var angel = (this.progressNum / 100) * Math.PI * 2;
+                    ctx.strokeStyle = "red";
+                    ctx.lineWidth = 15;
+                    ctx.lineCap = "round";
+                    ctx.beginPath();
+                    ctx.arc(
+                        canvas.width / 2,
+                        canvas.height / 2,
+                        this.canvasW / 2 - 7.5,
+                        -Math.PI / 2,
+                        angel - Math.PI / 2,
+                        false
+                    );
+                    ctx.stroke();
+                },
+                //画波浪线
+                drawWave: function (
+                    ctx,
+                    offsetX,
+                    offsetY,
+                    waveW,
+                    waveH,
+                    color
+                ) {
+                    var canvasW = this.canvasW,
+                        startX = 0; //波浪线初始x轴坐标
+                    ctx.beginPath();
+                    var startPos = [startX];
+                    for (var x = startX; x < canvasW; x += 20 / canvasW) {
+                        //正弦曲线公式：y=Asin(ωx+φ)+k
+                        var y =
+                            (1 - offsetY) * canvasW +
+                            waveH * Math.sin((startX + x) * waveW + offsetX);
+                        if (startPos.length == 1) {
+                            startPos.push(y);
+                        }
+                        ctx.lineTo(x, y);
+                    }
+                    //画出完整的波浪形状
+                    ctx.lineTo(canvasW, canvasW);
+                    ctx.lineTo(startX, canvasW);
+                    ctx.lineTo(startPos[0], startPos[1]);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                },
+            };
+            wave.init();
+            /*  window.onclick = function () {
+                flagNum = 100;
+                offsetYRange = 1.01;
+                wave.init();
+            }; */
+        </script>
+    </body>
 </html>
