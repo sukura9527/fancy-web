@@ -9,8 +9,14 @@ var vx = [],
     X = [],
     Y = [];
 var balls;
-const maxWidth = window.innerWidth - 100,
+let maxWidth = window.innerWidth - 100,
     maxHeight = window.innerHeight - 100;
+
+window.onresize = function () {
+    maxWidth = window.innerWidth - 100;
+    maxHeight = window.innerHeight - 100;
+    console.log(maxHeight, maxWidth);
+};
 /* 创建小球 */
 document.getElementById("biu").onclick = function () {
     const element = document.createElement("div");
@@ -51,7 +57,6 @@ document.getElementById("biu").onclick = function () {
 })();
 
 function moveBall(i, ball) {
-    console.log(maxHeight, maxWidth);
     X[i] += vx[i];
     Y[i] += vy[i];
     if (X[i] > maxWidth) {
