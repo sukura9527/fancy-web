@@ -8,8 +8,9 @@ var vx = [],
     vy = [],
     X = [],
     Y = [];
-var timer = null;
-var timerList = [];
+var balls;
+const maxWidth = window.innerWidth - 100,
+    maxHeight = window.innerHeight - 100;
 /* 创建小球 */
 document.getElementById("biu").onclick = function () {
     const element = document.createElement("div");
@@ -27,60 +28,51 @@ document.getElementById("biu").onclick = function () {
         b = Math.floor(Math.random() * 255);
     let ballColor = "rgba(" + r + "," + g + "," + b + ",0.8)";
     element.style.backgroundColor = ballColor;
-    end();
-    getBalls();
+    /*    getBalls(); */
 };
-function getBalls() {
+(function getBalls() {
     //获取所有的球
-    const balls = document.getElementsByClassName("ball");
+    balls = document.getElementsByClassName("ball");
     for (var i = 0; i < balls.length; i++) {
         const ball = balls[i];
-        vx[i] = Math.floor(Math.random() * 10 + 1);
-        vy[i] = Math.floor(Math.random() * 10 + 1);
-        X[i] = parseInt(ball.style.left);
-        Y[i] = parseInt(ball.style.top);
-        /* 小球运动 */
+        if (!vx[i]) {
+            vx[i] = Math.floor(Math.random() * 20);
+            vy[i] = Math.floor(Math.random() * 20);
+            X[i] = parseInt(ball.style.left);
+            Y[i] = parseInt(ball.style.top);
+        }
         moveBall(i, ball);
+        /* console.log(vx[i], vy[i], "======", X[i], Y[i]); */
+        setTimeout(() => {
+            ball.style.display = "none";
+        }, 5000);
     }
-}
+    requestAnimationFrame(getBalls);
+})();
+
 function moveBall(i, ball) {
-    console.log(vx[i], vy[i], "======", X[i], Y[i]);
-    var timer = setInterval(() => {
+    console.log(maxHeight, maxWidth);
+    X[i] += vx[i];
+    Y[i] += vy[i];
+    if (X[i] > maxWidth) {
+        X[i] = maxWidth;
+        vx[i] = -vx[i];
         // console.log(vx[i], vy[i], "======", X[i], Y[i]);
-        const maxHeight = window.innerHeight - 100,
-            maxWidth = window.innerWidth - 100;
+    } else if (X[i] < 0) {
+        X[i] = 0;
+        vx[i] = -vx[i];
         // console.log(vx[i], vy[i], "======", X[i], Y[i]);
-        X[i] += vx[i];
-        Y[i] += vy[i];
-        if (X[i] > maxWidth) {
-            X[i] = maxWidth;
-            vx[i] = -vx[i];
-            // console.log(vx[i], vy[i], "======", X[i], Y[i]);
-        } else if (X[i] < 0) {
-            X[i] = 0;
-            vx[i] = -vx[i];
-            // console.log(vx[i], vy[i], "======", X[i], Y[i]);
-        }
-        if (Y[i] > maxHeight) {
-            Y[i] = maxHeight;
-            vy[i] = -vy[i];
-            // console.log(vx[i], vy[i], "======", X[i], Y[i]);
-        } else if (Y[i] < 0) {
-            Y[i] = 0;
-            vy[i] = -vy[i];
-            // console.log(vx[i], vy[i], "======", X[i], Y[i]);
-        }
-
-        ball.style.left = X[i] + "px";
-        ball.style.top = Y[i] + "px";
-    }, 17);
-    timerList.push(timer);
-}
-
-function end() {
-    timerList.forEach((item, index) => {
-        clearInterval(item);
-    });
-    timerList = [];
-    timer = 0;
+    }
+    if (Y[i] > maxHeight) {
+        Y[i] = maxHeight;
+        vy[i] = -vy[i];
+        // console.log(vx[i], vy[i], "======", X[i], Y[i]);
+    } else if (Y[i] < 0) {
+        Y[i] = 0;
+        vy[i] = -vy[i];
+        // console.log(vx[i], vy[i], "======", X[i], Y[i]);
+    }
+    ball.style.left = X[i] + "px";
+    ball.style.top = Y[i] + "px";
+    /* ball.style.transform = `translateX(${X[i]}px) translateY(${Y[i]}px)`; */
 }
