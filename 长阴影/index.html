@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            http-equiv="Cache-Control"
+            content="no-cache, no-store, must-revalidate"
+        />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="full-screen" content="yes" />
+        <meta name="screen-orientation" content="portrait" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+        />
+        <link rel="stylesheet" href="longShadow.css" />
+        <title>长阴影</title>
+        <style>
+            .gradient {
+                text-shadow: 1px 1px 3px #2274b2, 2px 2px 3px #2274b2,
+                    3px 3px 3px #2274b2, 4px 4px 3px #2274b2,
+                    5px 5px 3px #2274b2, 6px 6px 3px #2274b2,
+                    7px 7px 3px #2274b2, 8px 8px 3px #2274b2,
+                    9px 9px 3px #2274b2;
+                transition: text-shadow 0.8s;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="text">
+            <a class="shadow"><span>S</span> </a>
+            <a class="shadow"><span>U</span> </a>
+            <a class="shadow"><span>K</span> </a>
+            <a class="shadow"><span>U</span> </a>
+            <a class="shadow"><span>R</span> </a>
+            <a class="shadow"><span>A</span> </a>
+        </div>
+        <script>
+            var shadows = document.getElementsByClassName("shadow");
+            var spans = document.getElementsByTagName("span");
+            window.onclick = function () {
+                console.log("1");
+                setTimeout(() => {
+                    for (let i = 0; i < shadows.length; i++) {
+                        const shadow = shadows[i];
+                        const span = spans[i];
+                        shadow.style.backgroundImage = `linear-gradient(135deg, #55acee 0%, #2274b2 100%)`;
+                        span.classList.add = "gradient";
+                    }
+                }, 1000);
+            };
+        </script>
+    </body>
+</html>
