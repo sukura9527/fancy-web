@@ -2,7 +2,8 @@
 
 -   Unit1
     -   [弹弹球](http://sukura9527.github.io/fancy-web/弹弹球)
-    -   [svg镂空文本](http://sukura9527.github.io/fancy-web/svg镂空文本)
+    -   [svg 镂空文本](http://sukura9527.github.io/fancy-web/svg镂空文本)
+    -   [长阴影](http://sukura9527.github.io/fancy-web/长阴影)
 -   Unit2
     -   [旋转的骰子](http://sukura9527.github.io/fancy-web/旋转的骰子)
     -   [水波进度加载球](http://sukura9527.github.io/fancy-web/水波进度加载球)
