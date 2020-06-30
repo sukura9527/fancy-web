@@ -1,13 +1,19 @@
 html {
     background-color: black;
-    font-size: 100px;
-    padding: 2em;
+    /* font-size: 100px; */
+    padding: 100px;
 }
-
+.photo-wrap {
+    perspective: 800px;
+    width: 800px;
+    perspective-origin: 50% 50%;
+    padding: 100px;
+}
 .cube {
     position: relative;
     transform: rotateX(-45deg) rotateY(45deg);
     transform: translateX();
+    box-sizing: border-box;
     /*         transform-style: preserve-3d; */
 }
 
@@ -38,6 +44,7 @@ html {
     border-radius: 40%;
     box-shadow: inset 0 0 20px #ccc;
     display: flex;
+
     /*     transform-style: preserve-3d; */
 }
 
@@ -140,7 +147,7 @@ html {
     top: 0;
     left: 0;
     background-color: #e0e0e0;
-    /*   background-color: red; */
+    box-sizing: border-box;
 }
 
 .clapboard:nth-child(1) {
