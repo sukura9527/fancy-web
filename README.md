@@ -15,5 +15,6 @@
 # 有趣的 canvas
 
 -   piu piu piu
-    -   [烟花](http://sukura9527.github.io/fancy-web/烟花) -螺线
--   [阿基米德螺线](http://sukura9527.github.io/fancy-web/阿基米德螺线)
+    -   [烟花](http://sukura9527.github.io/fancy-web/烟花)
+-   螺线
+    -   [阿基米德螺线](http://sukura9527.github.io/fancy-web/阿基米德螺线)
