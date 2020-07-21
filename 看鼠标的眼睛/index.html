@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			.eyes {
+				width: 200px;
+				height: 100px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				background-color: rgba(0, 0, 0, 0.8);
+				border-radius: 10px;
+				box-shadow: 2px 2px 20px 20px #0ff;
+			}
+			.eye {
+				width: 90px;
+				height: 90px;
+				border-radius: 50%;
+				background-color: orange;
+			}
+			.rim {
+				width: 70px;
+				height: 70px;
+				border-radius: 50%;
+				background-color: #fff;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				overflow: hidden;
+			}
+			.left {
+				position: absolute;
+				left: 0;
+				top: 5px;
+			}
+			.right {
+				position: absolute;
+				right: 0;
+				top: 5px;
+			}
+
+			.ball {
+				width: 24px;
+				height: 24px;
+				background-color: #000000;
+				border-radius: 50%;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			.eyelid {
+				z-index: -1;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				border-radius: 30%;
+				background-color: skyblue;
+				transform-origin: top center;
+				transform: scaleY(0.1);
+				animation: blink 0.8s infinite;
+				animation-play-state: paused;
+			}
+			@keyframes blink {
+				50% {
+					transform: scaleY(1);
+				}
+			}
+		</style>
+	</head>
+	<body onclick="blink()">
+		<div class="eyes">
+			<div class="left eye">
+				<!-- 左眼 -->
+				<div class="rim">
+					<!-- 眼圈 -->
+					<div class="eyelid"></div>
+					<!-- 眼皮 -->
+					<div class="ball"></div>
+					<!-- 眼珠 -->
+				</div>
+			</div>
+			<div class="right eye">
+				<!-- 右眼 -->
+				<div class="rim">
+					<!-- 眼圈 -->
+					<div class="eyelid"></div>
+					<!-- 眼皮 -->
+					<div class="ball"></div>
+					<!-- 眼珠 -->
+				</div>
+			</div>
+		</div>
+		<script>
+			var x1, x2, y1, y2;
+			var left = document.getElementsByClassName("left")[0];
+			var right = document.getElementsByClassName("right")[0];
+			x1 = left.clientX;
+			y1 = left.clientY;
+			x2 = right.clientX;
+			y2 = right.clientY;
+			function getMousePos(event) {
+				var e = event || window.event;
+				x = e.clientX;
+				y = e.clientY;
+				//倾斜角
+				a1 = (x - x1 - 12) / (y - y1 - 12);
+				a2 = (x - x2 - 12) / (y - y2 - 12);
+			}
+
+			var eyelids = document.getElementsByClassName("eyelid");
+			eyelid.onanimationiteration = endBlink;
+			function blink() {
+				eyelids.style.animationPlayState = "running";
+			}
+			function endBlink() {
+				eyelids.style.animationPlayState = "paused";
+			}
+		</script>
+	</body>
+</html>
