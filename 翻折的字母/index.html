@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>翻折的字母</title>
+		<style>
+			@font-face {
+				font-family: "Candcu";
+				src: url("./Candcu__.ttf") format("truetype"); /* Safari, Android, iOS */
+			}
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: "Candcu";
+				font-weight: 500;
+				font-size: 15vw;
+			}
+			.words {
+				text-align: center;
+				margin-top: 250px;
+			}
+			.word {
+				color: rgb(16, 129, 235);
+				position: relative;
+				perspective: 1000px;
+				transform-style: preserve-3d;
+			}
+			.word::before,
+			.word::after,
+			.word-top,
+			.word-mid {
+				content: attr(value);
+				position: absolute;
+				top: 0;
+				left: 0;
+				transform-origin: left center;
+				transition: all 0.5s ease-in;
+			}
+			.word::before,
+			.word-top {
+				color: white;
+				z-index: 2;
+				transform: rotateY(20deg);
+				text-shadow: 1px 1px #888, -1px -1px #eee;
+			}
+			.word:hover::before {
+				transform: rotateY(45deg);
+				transition: all 0.2s ease-out;
+			}
+			.word::after,
+			.word-mid {
+				color: rgba(0, 0, 0, 0.2);
+				z-index: 1;
+				filter: blur(1px);
+				transform: scale(1.05, 1) skewY(2deg);
+			}
+			.word:hover::after {
+				transform: rotateY(40deg) skewY(20deg) scale(1.1, 1);
+				transition: all 0.2s ease-out;
+			}
+
+			.wordsAuto {
+				width: 100%;
+				height: 100px;
+				display: flex;
+				flex-direction: row;
+				position: absolute;
+				top: 50px;
+				left: 50%;
+				transform: translateX(-50%);
+				text-align: center;
+			}
+			.part {
+				position: relative;
+				perspective: 1000px;
+				transform-style: preserve-3d;
+				flex: 1;
+			}
+			/* .word-top,
+			.word-mid {
+				position: absolute;
+				top: 0;
+				left: 0;
+				transform-origin: left center;
+				transition: all 0.5s ease-in;
+			}
+			.word-top {
+				color: white;
+				z-index: 2;
+				text-shadow: 1px 1px #888, -1px -1px #eee;
+			}
+			.word-mid {
+				color: rgba(0, 0, 0, 0.2);
+				z-index: 1;
+				filter: blur(1px);
+				transform: scale(1.05, 1) skewY(2deg);
+			} */
+			.word-bot {
+				color: rgb(16, 129, 235);
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wordsAuto">
+			<div class="part">
+				<span class="word-top">S</span>
+				<span class="word-mid">S</span>
+				<span class="word-bot">S</span>
+			</div>
+			<div class="part">
+				<span class="word-top">u</span>
+				<span class="word-mid">u</span>
+				<span class="word-bot">u</span>
+			</div>
+			<div class="part">
+				<span class="word-top">k</span>
+				<span class="word-mid">k</span>
+				<span class="word-bot">k</span>
+			</div>
+			<div class="part">
+				<span class="word-top">u</span>
+				<span class="word-mid">u</span>
+				<span class="word-bot">u</span>
+			</div>
+			<div class="part">
+				<span class="word-top">r</span>
+				<span class="word-mid">r</span>
+				<span class="word-bot">r</span>
+			</div>
+			<div class="part">
+				<span class="word-top">a</span>
+				<span class="word-mid">a</span>
+				<span class="word-bot">a</span>
+			</div>
+		</div>
+		<!-- <button onclick="start">START</button> -->
+		<h1 class="words">Hello,Sukura</h1>
+		<script src="jquery-1.12.4.js"></script>
+		<script>
+			jQuery(function ($) {
+				$(".words").each(function () {
+					transform3D($(this));
+				});
+				function transform3D(w) {
+					var $item,
+						wordList = w.text().split("");
+					w.text("");
+					for (let i = 0; i < wordList.length; ++i) {
+						$item = $('<span class="word"> </span>');
+						$item.text(wordList[i]);
+						$item.attr("value", wordList[i]);
+						w.append($item);
+					}
+				}
+			});
+			(function start() {
+				var wordTopList = document.getElementsByClassName("word-top");
+				var wordMidList = document.getElementsByClassName("word-mid");
+
+				for (let j = 0; j < wordTopList.length; j++) {
+					setTimeout(() => {
+						const element = document.getElementsByClassName(
+							"word-top"
+						)[j];
+						element.style.transform = "rotateY(-45deg)";
+					}, 500);
+				}
+				for (let k = 0; k < wordMidList.length; k++) {
+					setTimeout(() => {
+						const element = document.getElementsByClassName(
+							"word-mid"
+						)[k];
+						element.style.transform =
+							"rotateY(40deg) skewY(20deg) scale(1.1, 1)";
+					}, 500);
+				}
+			})();
+		</script>
+	</body>
+</html>
