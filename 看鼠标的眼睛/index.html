@@ -16,6 +16,7 @@
 				position: absolute;
 				left: 0;
 				top: 0;
+				background-color: #000;
 			}
 			.eyes {
 				width: 200px;
@@ -24,9 +25,7 @@
 				left: 50%;
 				top: 50%;
 				transform: translate(-50%, -50%);
-				background-color: rgba(0, 0, 0, 0.8);
-				border-radius: 10px;
-				box-shadow: 2px 2px 20px 20px #0ff;
+				/* border-radius: 10px; */
 			}
 			.eye {
 				width: 90px;
@@ -75,17 +74,18 @@
 				background-color: skyblue;
 				transform-origin: top center;
 				transform: scaleY(0.1);
-				animation: blink 0.8s infinite;
-				animation-play-state: paused;
+				transition: all 0.5s;
+				/* animation: blink 0.8s infinite;
+				animation-play-state: paused; */
 			}
-			@keyframes blink {
+			/* @keyframes blink {
 				50% {
 					transform: scaleY(1);
 				}
-			}
+			} */
 		</style>
 	</head>
-	<body onclick="blink()">
+	<body onclick="blink()" onmousemove="onmousemove()">
 		<div class="eyes">
 			<div class="left eye">
 				<!-- 左眼 -->
@@ -93,7 +93,7 @@
 					<!-- 眼圈 -->
 					<div class="eyelid"></div>
 					<!-- 眼皮 -->
-					<div class="ball"></div>
+					<div class="ball leftBall"></div>
 					<!-- 眼珠 -->
 				</div>
 			</div>
@@ -103,36 +103,44 @@
 					<!-- 眼圈 -->
 					<div class="eyelid"></div>
 					<!-- 眼皮 -->
-					<div class="ball"></div>
+					<div class="ball rightBall"></div>
 					<!-- 眼珠 -->
 				</div>
 			</div>
 		</div>
 		<script>
 			var x1, x2, y1, y2;
-			var left = document.getElementsByClassName("left")[0];
-			var right = document.getElementsByClassName("right")[0];
+			var left = document.getElementsByClassName("leftBall")[0];
+			var right = document.getElementsByClassName("rightBall")[0];
 			x1 = left.clientX;
 			y1 = left.clientY;
 			x2 = right.clientX;
 			y2 = right.clientY;
-			function getMousePos(event) {
+			function onmousemove(e) {
 				var e = event || window.event;
 				x = e.clientX;
 				y = e.clientY;
 				//倾斜角
 				a1 = (x - x1 - 12) / (y - y1 - 12);
 				a2 = (x - x2 - 12) / (y - y2 - 12);
+				cx1 = Math.cos(a1) * 50 + "px";
+				cy1 = Math.sin(a1) * 50 + "px";
+				cx2 = Math.cos(a2) * 50 + "px";
+				cy2 = Math.sin(a2) * 50 + "px";
+				left.style.transform = `translate( cx1,cy1)`;
+				right.style.transform = `translate( cx2,cy2)`;
+				console.log("23131214");
 			}
-
-			var eyelids = document.getElementsByClassName("eyelid");
-			eyelid.onanimationiteration = endBlink;
+			var eyelidLeft = document.getElementsByClassName("eyelid")[0];
+			var eyelidRight = document.getElementsByClassName("eyelid")[1];
+			// eyelids.onanimationiteration = endBlink;
 			function blink() {
-				eyelids.style.animationPlayState = "running";
+				// eyelids.style.animationPlayState = "running";
+				console.log("21313");
 			}
-			function endBlink() {
-				eyelids.style.animationPlayState = "paused";
-			}
+			// function endBlink() {
+			// 	eyelids.style.animationPlayState = "paused";
+			// }
 		</script>
 	</body>
 </html>

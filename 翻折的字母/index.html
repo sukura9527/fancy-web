@@ -77,25 +77,7 @@
 				transform-style: preserve-3d;
 				flex: 1;
 			}
-			/* .word-top,
-			.word-mid {
-				position: absolute;
-				top: 0;
-				left: 0;
-				transform-origin: left center;
-				transition: all 0.5s ease-in;
-			}
-			.word-top {
-				color: white;
-				z-index: 2;
-				text-shadow: 1px 1px #888, -1px -1px #eee;
-			}
-			.word-mid {
-				color: rgba(0, 0, 0, 0.2);
-				z-index: 1;
-				filter: blur(1px);
-				transform: scale(1.05, 1) skewY(2deg);
-			} */
+
 			.word-bot {
 				color: rgb(16, 129, 235);
 				position: absolute;
@@ -104,7 +86,7 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body onclick="start()">
 		<div class="wordsAuto">
 			<div class="part">
 				<span class="word-top">S</span>
@@ -137,7 +119,7 @@
 				<span class="word-bot">a</span>
 			</div>
 		</div>
-		<!-- <button onclick="start">START</button> -->
+
 		<h1 class="words">Hello,Sukura</h1>
 		<script src="jquery-1.12.4.js"></script>
 		<script>
@@ -157,7 +139,7 @@
 					}
 				}
 			});
-			(function start() {
+			function start() {
 				var wordTopList = document.getElementsByClassName("word-top");
 				var wordMidList = document.getElementsByClassName("word-mid");
 
@@ -178,7 +160,7 @@
 							"rotateY(40deg) skewY(20deg) scale(1.1, 1)";
 					}, 500);
 				}
-			})();
+			}
 		</script>
 	</body>
 </html>
