@@ -16,130 +16,102 @@
 				position: absolute;
 				left: 0;
 				top: 0;
-				background-color: #000;
-			}
-			.eyes {
-				width: 200px;
-				height: 100px;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
-				/* border-radius: 10px; */
-			}
-			.eye {
-				width: 90px;
-				height: 90px;
-				border-radius: 50%;
-				background-color: orange;
-			}
-			.rim {
-				width: 70px;
-				height: 70px;
-				border-radius: 50%;
-				background-color: #fff;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
+				background: url("./11.jpg");
+				background-size: cover;
 				overflow: hidden;
 			}
-			.left {
+			.head {
+				width: 300px;
+				height: 200px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 70% 70% 66% 66%;
+				background-color: #fff;
+			}
+			.face {
+				width: 250px;
+				height: 150px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				z-index: 99;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+				align-items: center;
+				border-radius: 70% 70% 66% 66%;
+				background-color: #000;
+				padding-left: 40px;
+				padding-right: 40px;
+				box-sizing: border-box;
+			}
+			.eye {
+				width: 80px;
+				height: 60px;
+				background-color: #0cc8f7;
+				border-radius: 50%;
+				transition: all 0.1s ease-in;
+				text-shadow: 1px 1px 2px rgb(39, 37, 37);
+			}
+			#ship {
+				width: 100px;
 				position: absolute;
 				left: 0;
-				top: 5px;
+				top: 0;
+				display: none;
 			}
-			.right {
-				position: absolute;
-				right: 0;
-				top: 5px;
-			}
-
-			.ball {
-				width: 24px;
-				height: 24px;
-				background-color: #000000;
-				border-radius: 50%;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-			}
-			.eyelid {
-				z-index: -1;
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				border-radius: 30%;
-				background-color: skyblue;
-				transform-origin: top center;
-				transform: scaleY(0.1);
-				transition: all 0.5s;
-				/* animation: blink 0.8s infinite;
-				animation-play-state: paused; */
-			}
-			/* @keyframes blink {
-				50% {
-					transform: scaleY(1);
-				}
-			} */
 		</style>
 	</head>
-	<body onclick="blink()" onmousemove="onmousemove()">
-		<div class="eyes">
-			<div class="left eye">
-				<!-- 左眼 -->
-				<div class="rim">
-					<!-- 眼圈 -->
-					<div class="eyelid"></div>
-					<!-- 眼皮 -->
-					<div class="ball leftBall"></div>
-					<!-- 眼珠 -->
-				</div>
-			</div>
-			<div class="right eye">
-				<!-- 右眼 -->
-				<div class="rim">
-					<!-- 眼圈 -->
-					<div class="eyelid"></div>
-					<!-- 眼皮 -->
-					<div class="ball rightBall"></div>
-					<!-- 眼珠 -->
-				</div>
+	<body onclick="createShip()" onmousemove="mouseMove()" onresize="resize()">
+		<div class="head">
+			<div class="face">
+				<div class="eye"></div>
+				<div class="eye"></div>
 			</div>
 		</div>
+		<img id="ship" src="./ship1.png" alt="" />
 		<script>
-			var x1, x2, y1, y2;
-			var left = document.getElementsByClassName("leftBall")[0];
-			var right = document.getElementsByClassName("rightBall")[0];
-			x1 = left.clientX;
-			y1 = left.clientY;
-			x2 = right.clientX;
-			y2 = right.clientY;
-			function onmousemove(e) {
+			var leftEye = document.getElementsByClassName("eye")[0];
+			var rightEye = document.getElementsByClassName("eye")[1];
+			var ship = document.getElementById("ship");
+			let h = document.body.clientHeight;
+			let w = document.body.clientWidth;
+			function mouseMove(e) {
+				//鼠标位置
 				var e = event || window.event;
-				x = e.clientX;
-				y = e.clientY;
-				//倾斜角
-				a1 = (x - x1 - 12) / (y - y1 - 12);
-				a2 = (x - x2 - 12) / (y - y2 - 12);
-				cx1 = Math.cos(a1) * 50 + "px";
-				cy1 = Math.sin(a1) * 50 + "px";
-				cx2 = Math.cos(a2) * 50 + "px";
-				cy2 = Math.sin(a2) * 50 + "px";
-				left.style.transform = `translate( cx1,cy1)`;
-				right.style.transform = `translate( cx2,cy2)`;
-				console.log("23131214");
+				let X = e.clientX,
+					Y = e.clientY,
+					cx = -((w / 2 - X) / (w / 2)) * 35,
+					cy = -((h / 2 - Y) / (h / 2)) * 35;
+				console.log(X, Y, cx, cy);
+				ship.style.top = `${Y - 10}px`;
+				ship.style.left = `${X - 50}px`;
+				leftEye.style.transform = `translate3d(${cx}%,${cy}%,0)`;
+				rightEye.style.transform = `translate3d(${cx}%,${cy}%,0)`;
 			}
-			var eyelidLeft = document.getElementsByClassName("eyelid")[0];
-			var eyelidRight = document.getElementsByClassName("eyelid")[1];
-			// eyelids.onanimationiteration = endBlink;
-			function blink() {
-				// eyelids.style.animationPlayState = "running";
-				console.log("21313");
+			function resize() {
+				h = document.body.clientHeight;
+				w = document.body.clientWidth;
 			}
-			// function endBlink() {
-			// 	eyelids.style.animationPlayState = "paused";
+			function createShip() {
+				// var e = event || window.event;
+				// let x = e.clientX;
+				// let y = e.clientY;
+				ship.style.display = "block";
+				// ship.style.top = `${y}px`;
+				// ship.style.left = `${x}px`;
+			}
+			//眨眼动画
+			// function blink() {
+			// 	eyelidLeft.style.transform = "scaleY(1)";
+			// 	eyelidRight.style.transform = "scaleY(1)";
+			// 	setTimeout(() => {
+			// 		eyelidLeft.style.transform = "scaleY(0)";
+			// 		eyelidRight.style.transform = "scaleY(0)";
+			// 	}, 600);
 			// }
 		</script>
 	</body>
