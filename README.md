@@ -17,6 +17,7 @@
 -   Unit4
     -   [翻折的字母](http://sukura9527.github.io/fancy-web/翻折的字母)
     -   [看鼠标的眼睛](http://sukura9527.github.io/fancy-web/看鼠标的眼睛)
+    -   [图片拼接](http://sukura9527.github.io/fancy-web/图片拼接)
 
 # 有趣的 canvas
 
