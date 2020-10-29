@@ -31,6 +31,8 @@
       const RADIUS = 2
       const coordinates = []
       const colors = ['orangered', 'orange']
+      let clickFlag = false
+      let isBack = false
       let outTime = null
       let backTime = null
       let balls = []
@@ -48,24 +50,45 @@
           getTextCoordinates()
           addBall()
           render(cxt)
-          outTime = setInterval(() => {
-            updateBalls(true)
-            render(cxt)
-          }, 60)
-          setTimeout(() => {
-            clearInterval(outTime)
-          }, 1000)
-          window.onclick = function () {
-            clearInterval(backTime)
+          // 初始向外扩散
+          if (!isBack) {
+            ballOut()
+            console.log(11111)
+          }
+        }
+        window.onclick = function () {
+          if (!clickFlag) {
+            return
+          }
+          clickFlag = false
+          if (!isBack) {
+            ballOut()
+            console.log(2222)
+          } else {
             backTime = setInterval(() => {
               updateBalls(false)
               render(cxt)
             }, 60)
             setTimeout(() => {
               clearInterval(backTime)
+              clickFlag = true
+              isBack = false
             }, 1000)
           }
         }
+        // 初始向外扩散
+        function ballOut() {
+          outTime = setInterval(() => {
+            updateBalls(true)
+            render(cxt)
+          }, 60)
+          setTimeout(() => {
+            clearInterval(outTime)
+            clickFlag = true
+            isBack = true
+          }, 1000)
+        }
+
         // 显示字母的坐标{x,y}
         function getTextCoordinates() {
           let imgData, x, y
@@ -77,7 +100,6 @@
               y = Math.floor(i / 4 / textW)
               if (x % (RADIUS * 2 + 3) == 0 && y % (RADIUS * 2 + 3) == 0) {
                 coordinates.push({ x: x, y: y })
-                console.log(coordinates)
               }
             }
           }
@@ -149,7 +171,6 @@
               // time: Math.random() * 2 + 0.5,
               color: colors[Math.floor(Math.random() * colors.length)],
             }
-            console.log(aBall)
             balls.push(aBall)
           }
         }
