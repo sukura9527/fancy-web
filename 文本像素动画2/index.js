@@ -1,101 +1,114 @@
-const textW = 400
+const textW = 450
 const textH = 450
 const WINDOW_WIDTH = 800
 const WINDOW_HEIGHT = 600
 const RADIUS = 2
-const coordinates = []
+const TIME = 1000
+
 const colors = ['orangered', 'orange']
 const canvas = document.getElementById('canvas')
-let clickFlag = false
-let isBack = false
+const textCanvas = document.getElementById('textCanvas')
+let isBacked = true
 let outTime = null
 let backTime = null
 let balls = []
+let entered = false
+let coordinates = []
 window.onload = function () {
   canvas.width = WINDOW_WIDTH
   canvas.height = WINDOW_HEIGHT
   const cxt = canvas.getContext('2d')
-  drawText('S')
-  // 显示字母S
-  function drawText (text) {
-    cxt.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-    cxt.fillStyle = '#ff1111'
-    cxt.textAlign = 'center'
-    cxt.font = 'bold 400px Arial'
-    cxt.fillText(text, textW, textH)
-    getTextCoordinates()
-    // addBall()
-    render(cxt)
-    // 初始向外扩散
-    if (!isBack) {
-      addBall()
-    }
-  }
+  const cxtText = canvas.getContext('2d')
+  drawText('S')  // 显示字母S
   ballOut()
+  setTimeout(() => {
+    ballBack()
+  }, 2 * TIME);
+  function drawText (text) {
+    cxtText.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+    cxtText.fillStyle = '#ff1111'
+    cxtText.textAlign = 'center'
+    cxtText.font = 'bold 400px Arial'
+    cxtText.fillText(text, 300, 300)
+    getTextCoordinates()
+    render(cxt)
+    addBall()
+  }
 
-  // function stopBubble (e) {
-  //   //如果提供了事件对象，则这是一个非IE浏览器 
-  //   if (e && e.stopPropagation)
-  //     //因此它支持W3C的stopPropagation()方法 
-  //     e.stopPropagation();
-  //   else
-  //     //否则，我们需要使用IE的方式来取消事件冒泡 
-  //     window.event.cancelBubble = true;
-  // }
-
-  canvas.onclick = function () {
-    if (!clickFlag) {
+  // 按下回车
+  window.onkeydown = function (e) {
+    if (entered) {
       return
     }
-    clickFlag = false
-    if (!isBack) {
-      addBall()
-      ballOut()
+    if (isBacked) {
+      cxt.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+      coordinates = []
+      balls = []
+      const value = document.getElementById('inputText').value
+      if (e.code == 'Enter') {
+        console.log(value, coordinates, balls);
+        drawText(value)
+        ballOut()
+        setTimeout(() => {
+          ballBack()
+        }, 2 * TIME);
+      }
     } else {
-      backTime = setInterval(() => {
-        updateBalls(false)
-        render(cxt)
-      }, 60)
+      ballBack()
       setTimeout(() => {
-        clearInterval(backTime)
-        clickFlag = true
-        isBack = false
-      }, 1000)
+        cxt.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        coordinates = []
+        balls = []
+        const value = document.getElementById('inputText').value
+        if (e.code == 'Enter') {
+          console.log(value, coordinates, balls);
+          drawText(value)
+          ballOut()
+          setTimeout(() => {
+            ballBack()
+          }, 2 * TIME);
+        }
+      }, TIME);
     }
+    setTimeout(() => {
+      entered = false
+    }, 2 * TIME);
   }
-
-  // window.onkeydown = function (e) {
-  //   // cxt.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-  //   const value = document.getElementById('inputText').value
-  //   if (e.code == 'Enter') {
-  //     console.log(value);
-  //     drawText(value)
-  //   }
-  // }
-
-  // 初始向外扩散
+  //向内聚拢
+  function ballBack () {
+    clearInterval(backTime)
+    backTime = setInterval(() => {
+      updateBalls(false)
+      render(cxt)
+    }, 60)
+    setTimeout(() => {
+      clearInterval(backTime)
+      isBacked = true
+    }, TIME)
+  }
+  // 向外扩散
   function ballOut () {
+    clearInterval(outTime)
     outTime = setInterval(() => {
       updateBalls(true)
       render(cxt)
     }, 60)
     setTimeout(() => {
       clearInterval(outTime)
-      clickFlag = true
-      isBack = true
-    }, 1000)
+      isBacked = false
+    }, TIME)
   }
 
   // 显示字母的坐标{x,y}
   function getTextCoordinates () {
     let imgData, x, y
-    imgData = cxt.getImageData(0, 0, textW, textH).data
+    imgData = cxtText.getImageData(0, 0, textW, textH).data
     for (let i = 0; i < imgData.length; i += 4) {
       const element = imgData[i]
       if (element !== 0) {
         x = (i / 4) % textW
         y = Math.floor(i / 4 / textW)
-        if (x % (RADIUS * 2 + 3) == 0 && y % (RADIUS * 2 + 3) == 0) {
+        if (x % (RADIUS * 2 + 4) == 0 && y % (RADIUS * 2 + 4) == 0) {
           coordinates.push({ x: x, y: y })
         }
       }
@@ -121,7 +134,6 @@ window.onload = function () {
       for (let i = 0; i < balls.length; i++) {
         balls[i].x += balls[i].vx
         balls[i].y += balls[i].vy
-        // balls[i].vy += balls[i].g
         if (balls[i].y >= WINDOW_HEIGHT - RADIUS) {
           balls[i].y = WINDOW_HEIGHT - RADIUS
           balls[i].vy = -balls[i].vy * 0.5
@@ -135,7 +147,6 @@ window.onload = function () {
       for (let i = 0; i < balls.length; i++) {
         balls[i].x -= balls[i].vx
         balls[i].y -= balls[i].vy
-        // balls[i].vy += balls[i].g
         if (balls[i].y >= WINDOW_HEIGHT - RADIUS) {
           balls[i].y = WINDOW_HEIGHT - RADIUS
           balls[i].vy = -balls[i].vy * 0.5
@@ -152,8 +163,8 @@ window.onload = function () {
     balls = []
     for (let i = 0; i < coordinates.length; i++) {
       let aBall = {
-        x: coordinates[i].x,
-        y: coordinates[i].y,
+        x: coordinates[i].x + 10,
+        y: coordinates[i].y + 10,
         vx: Math.floor(
           Math.random() *
           8 *

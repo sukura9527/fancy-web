@@ -13,7 +13,9 @@
       body {
         width: 100%;
         height: 100%;
-        position: relative;
+        position: fixed;
+        left: 0;
+        top: 0;
       }
       #textCanvas {
         display: none;
@@ -22,9 +24,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        /* left: 50%;
-        transform: translateX(-50%); */
-        background-color: black;
+        background-color: #000000;
       }
       .input {
         width: 200px;
@@ -32,8 +32,9 @@
         font-size: 30px;
         text-align: center;
         position: absolute;
-        top: 50px;
-        left: 0;
+        top: 500px;
+        left: 50%;
+        transform: translateX(-50%);
       }
       #inputText {
         clear: both;
@@ -44,6 +45,7 @@
     </style>
   </head>
   <body>
+    <canvas id="textCanvas" width="600" height="400"></canvas>
     <canvas id="canvas"> Your browser does not support canvas </canvas>
     <div class="input">
       <p>请输入文本</p>
