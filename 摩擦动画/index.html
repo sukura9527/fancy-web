@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        color: white;
+      }
+      .trails {
+        width: 500px;
+        height: 500px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: black;
+        text-align: center;
+        filter: blur(5px);
+        mix-blend-mode: lighten;
+      }
+      .text {
+        font-family: 'caoshu';
+        font-size: 100px;
+        color: black;
+        user-select: none;
+      }
+      .bg {
+        width: 500px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .circle {
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background-color: black;
+        transform: translate(-50%, -50%);
+        visibility: hidden;
+        animation: blur 2s 1s both;
+      }
+      @font-face {
+        font-family: 'caoshu';
+        src: url('./font/ZhongQiLiuJiangYingBiCaoTi-2.ttf');
+      }
+      @keyframes blur {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg">
+      <img src="images/Digimon.jpg" width="100%" alt="" />
+    </div>
+    <div class="trails">
+      <span class="text">DIGIMON</span>
+      <div class="circle template"></div>
+    </div>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+      jQuery(function ($) {
+        let x,
+          y,
+          drag = false,
+          $circles = $('.trails'),
+          $temp = $('.circle.template')
+        $(document).on('mousedown', mousedown)
+        $(document).on('mouseup', mouseup)
+        $(document).on('mousemove', mousemove)
+        function mousedown() {
+          drag = true
+        }
+        function mouseup() {
+          drag = false
+        }
+        function mousemove(e) {
+          if (drag) {
+            x = e.clientX
+            y = e.clientY
+            var $new = $temp.clone()
+            $circles.append($new)
+            $new.removeClass('template')
+            $new.css({
+              left: x + 'px',
+              top: y + 'px',
+            })
+            $new.on('animationend', onAniFinished)
+          }
+        }
+        function onAniFinished() {
+          $(this).remove()
+        }
+      })
+    </script>
+  </body>
+</html>
