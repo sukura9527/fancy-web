@@ -139,17 +139,14 @@ function getDisOf (a = {}, b = {}) {
 function mouseenter () {
   hasMouse = true
   balls.unshift(mouse_ball)
-  console.log(11111111111)
 }
 function mouseleave () {
   hasMouse = false
   balls.shift(mouse_ball)
-  console.log(2222222222)
 }
 function mousemove (e) {
   if (hasMouse) {
     mouse_ball.x = e.clientX
     mouse_ball.y = e.clientY
-    console.log(33333333333)
   }
 }
