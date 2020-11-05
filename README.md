@@ -21,6 +21,7 @@
   - [文本像素动画 2](http://sukura9527.github.io/fancy-web/文本像素动画2)
 - Unit4
   - [摩擦动画](http://sukura9527.github.io/fancy-web/摩擦动画)
+  - [canvas 绘画基础 2](http://sukura9527.github.io/fancy-web/canvas绘画基础2)
 
 # 有趣的 canvas
 
