@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: aqua;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .clock {
+        width: 80vw;
+        height: 25vw;
+        border-radius: 1vw;
+        background: rgba(250, 250, 250, 1);
+        /* box-shadow: 0px 5px 6px rgb(160, 160, 160); */
+        /* background: -webkit-linear-gradient(
+          60deg,
+          rgba(250, 250, 250, 1) 25%,
+          rgba(210, 210, 210, 1)
+        ); */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding-left: 4%;
+        padding-right: 1%;
+      }
+      .screen {
+        width: 86%;
+        height: 80%;
+        border-radius: 1vw;
+        position: relative;
+        background-color: #e6e6e6;
+      }
+      .shadows,
+      .numbers {
+        height: 70%;
+        width: 80%;
+        position: absolute;
+        top: 20%;
+        left: 51%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .dot {
+        width: 10px;
+        height: 100%;
+        margin-right: 1vw;
+        margin-left: 1vw;
+      }
+      .dot::after,
+      .dot::before {
+        content: '';
+        position: absolute;
+        border-top: 5px solid #000000;
+        border-right: 5px solid #000000;
+        border-bottom: 5px solid #000000;
+        border-left: 5px solid #000000;
+        box-shadow: 1px 1px 2px #3a3636;
+      }
+      .dot::before {
+        margin-top: 24%;
+      }
+      .dot::after {
+        margin-top: 5%;
+      }
+      .number {
+        width: 14%;
+        height: 100%;
+        position: relative;
+        margin-right: 1vw;
+        margin-left: 1vw;
+      }
+      .branch {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 10px;
+      }
+      .up {
+        top: 0;
+      }
+      .middle {
+        top: 50%;
+      }
+      .down {
+        top: 100%;
+      }
+      .up.left,
+      .up.right {
+        top: 25%;
+      }
+      .down.left,
+      .down.right {
+        top: 75%;
+      }
+      .center {
+        left: 50%;
+      }
+      .left {
+        left: 0%;
+      }
+      .right {
+        left: 100%;
+      }
+      .left,
+      .right {
+        transform: translate(-50%, -50%) rotate(-90deg);
+      }
+      .branch::after,
+      .branch::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        border: 5px solid transparent;
+      }
+      .branch::before {
+        right: 100%;
+        /* border-right: 5px solid #000; */
+      }
+      .branch::after {
+        left: 100%;
+        /* border-left: 5px solid #000; */
+      }
+      .shadows .branch {
+        background-color: #d0d0d0;
+      }
+      .shadows .branch::before {
+        border-right: 5px solid #d0d0d0;
+      }
+      .shadows .branch::after {
+        border-left: 5px solid #d0d0d0;
+      }
+      /* .numbers .branch .light {
+        background-color: #000000;
+      } */
+      .clock-icon {
+        width: 8%;
+        position: absolute;
+        left: 2%;
+        bottom: 8%;
+      }
+      .am-pm {
+        position: absolute;
+        right: 2%;
+        bottom: 8%;
+        color: #000000;
+        font-size: 1vw;
+        text-shadow: 1px 1px 2px rgb(114 99 99);
+      }
+      .buttons {
+        width: 10%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .btn {
+        width: 100%;
+        height: 20%;
+        border-radius: 50%;
+        background: -webkit-linear-gradient(
+          60deg,
+          rgba(250, 250, 250, 1) 25%,
+          rgba(210, 210, 210, 1)
+        );
+        box-shadow: 1px 1px 5px #5f5e5e, -1px -1px 5px #5f5e5e;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .img {
+        width: 40%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="screen">
+        <div class="lamp"></div>
+        <!-- 设置时间 -->
+        <div class="shadows">
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="dot"></div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="dot"></div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+        </div>
+        <!-- 显示时间 -->
+        <div class="numbers">
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="dot"></div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="dot"></div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+          <div class="number">
+            <div class="branch up center"></div>
+            <div class="branch up left"></div>
+            <div class="branch up right"></div>
+            <div class="branch middle center"></div>
+            <div class="branch down left"></div>
+            <div class="branch down right"></div>
+            <div class="branch down center"></div>
+          </div>
+        </div>
+        <!-- 星期 -->
+        <div class="week"></div>
+        <!-- 闹钟 -->
+        <img class="clock-icon" src="./imgs/clock.png" />
+        <!-- 上下午 -->
+        <div class="am-pm">
+          <span>AM</span>
+          <!-- <span>PM</span> -->
+        </div>
+      </div>
+      <!-- 设置按钮 -->
+      <div class="buttons">
+        <div class="btn set-clock">
+          <img class="img" src="./imgs/clover.png" alt="" />
+        </div>
+        <div class="btn time-up">
+          <img class="img" src="./imgs/arrow-up.png" alt="" />
+        </div>
+        <div class="btn time-down">
+          <img class="img" src="./imgs/arrow-down.png" alt="" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
