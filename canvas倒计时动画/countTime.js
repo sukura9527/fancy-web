@@ -4,7 +4,7 @@ const RADIUS = 8
 const MARGIN_TOP = 60
 const MARGIN_LEFT = 30
 
-let endTime = new Date(2020, 9, 29, 23, 59, 59)
+let endTime = new Date(2020, 12, 29, 23, 59, 59)
 let curSecond = 0
 let balls = []
 const colors = ['chartreuse', 'red', 'aqua', 'bule', 'yellowgreen', 'black', 'green']
