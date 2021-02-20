@@ -66,7 +66,7 @@
       }
       .dot::after,
       .dot::before {
-        content: "";
+        content: '';
         position: absolute;
         border-top: 5px solid #000000;
         border-right: 5px solid #000000;
@@ -126,7 +126,7 @@
       }
       .branch::after,
       .branch::before {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         top: 0;
@@ -182,11 +182,7 @@
         width: 100%;
         height: 20%;
         border-radius: 50%;
-        background: -webkit-linear-gradient(
-          60deg,
-          rgba(250, 250, 250, 1) 25%,
-          rgba(210, 210, 210, 1)
-        );
+        background: -webkit-linear-gradient(60deg, rgba(250, 250, 250, 1) 25%, rgba(210, 210, 210, 1));
         box-shadow: 1px 1px 5px #5f5e5e, -1px -1px 5px #5f5e5e;
         display: flex;
         justify-content: center;
@@ -381,76 +377,73 @@
     </div>
     <script src="./index.js"></script>
     <script>
-      window.requestAnimationFrame(refreshTime)
+      window.requestAnimationFrame(refreshTime);
       // ;(function render() {
       //   refreshTime()
       // })()
-      refreshTime()
+      refreshTime();
       //加类名
       function addClassName(index, num) {
-        let lightClass = tubeMap[num]
+        let lightClass = tubeMap[num];
+        console.log('----------------', lightClass);
         lightClass.forEach((element) => {
-          let el = document
-            .getElementById("numbers")
-            .getElementsByClassName(element)[index]
-          el.classList.add("light")
+          let el = document.getElementById('numbers').getElementsByClassName(element)[index];
+          el.classList.add('light');
           // document.styleSheets[0].insertRule(
           //   ".branch::before{border-right: 5px solid #000000;}",
           //   0
           // ) //chrome,firefox
-        })
+        });
       }
       //删类名
       function removeClassName(index, num) {
-        let lightClass = tubeMap[num]
+        let lightClass = tubeMap[num];
         lightClass.forEach((element) => {
-          let el = document
-            .getElementById("numbers")
-            .getElementsByClassName(element)[index]
-          el.classList.remove("light")
+          let el = document.getElementById('numbers').getElementsByClassName(element)[index];
+          el.classList.remove('light');
           // document.styleSheets[0].insertRule(
           //   ".branch::before{border-right: 5px solid #000000;}",
           //   0
           // ) //chrome,firefox
-        })
+        });
       }
       //刷新时间
       function refreshTime() {
         let myDate = new Date(),
-          day = myDate.getDay()
-        time = myDate.toLocaleTimeString("en")
-        console.log(time, day) //时间格式 2:19:34 PM
+          day = myDate.getDay();
+        time = myDate.toLocaleTimeString('en');
+        console.log(time, day); //时间格式 2:19:34 PM
         //显示星期几
-        let nowDay = document.getElementsByClassName("dayOfWeek")[day]
-        nowDay.classList.add("week-light")
+        let nowDay = document.getElementsByClassName('dayOfWeek')[day];
+        nowDay.classList.add('week-light');
         //显示上午下午
-        console.log(time.match(/AM|PM/))
-        if (time.match(/AM|PM/) == "AM") {
-          document.getElementById("pm").style.display = "none"
+        console.log(time.match(/AM|PM/));
+        if (time.match(/AM|PM/) == 'AM') {
+          document.getElementById('pm').style.display = 'none';
         } else {
-          document.getElementById("am").style.display = "none"
+          document.getElementById('am').style.display = 'none';
         }
         //显示hh:mm:ss
-        let _time = time.slice(0, time.length - 3).split(":")
-        console.log(_time)
+        let _time = time.slice(0, time.length - 3).split(':');
+        console.log(_time);
         _time.forEach((element, index) => {
           if (element < 10) {
-            addClassName(index * 2, 0)
-            addClassName(index + 1, element)
+            addClassName(index * 2, 0);
+            addClassName(index + 1, element);
             setTimeout(() => {
-              removeClassName(index * 2, 0)
-              removeClassName(index + 1, element)
-            }, 900)
+              removeClassName(index * 2, 0);
+              removeClassName(index + 1, element);
+            }, 900);
           } else {
-            addClassName(index * 2, parseInt(element / 10))
-            addClassName(index * 2 + 1, element % 10)
+            addClassName(index * 2, parseInt(element / 10));
+            addClassName(index * 2 + 1, element % 10);
             setTimeout(() => {
-              removeClassName(index * 2, parseInt(element / 10))
-              removeClassName(index * 2 + 1, element % 10)
-            }, 900)
+              removeClassName(index * 2, parseInt(element / 10));
+              removeClassName(index * 2 + 1, element % 10);
+            }, 900);
           }
-        })
-        window.requestAnimationFrame(refreshTime)
+        });
+        window.requestAnimationFrame(refreshTime);
       }
     </script>
   </body>

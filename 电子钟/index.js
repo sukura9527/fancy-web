@@ -7,6 +7,6 @@ let tubeMap = {
   "5": ['up center', 'up left', 'middle center', 'down right', 'down center',],
   "6": ['up center', 'up left', 'middle center', 'down right', 'down left', 'down center',],
   "7": ['up center', 'up right', 'up left', 'down right',],
-  "8": ['up center', 'up right', 'middle center', 'down right', 'down center', 'down left',],
-  "9": ['up center', 'up right', 'middle center', 'down right', 'down center']
+  "8": ['up center','up left', 'up right', 'middle center', 'down right', 'down center', 'down left',],
+  "9": ['up center','up left', 'up right', 'middle center', 'down right', 'down center']
 }
