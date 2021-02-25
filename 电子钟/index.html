@@ -24,12 +24,6 @@
         height: 25vw;
         border-radius: 1vw;
         background: rgba(250, 250, 250, 1);
-        /* box-shadow: 0px 5px 6px rgb(160, 160, 160); */
-        /* background: -webkit-linear-gradient(
-          60deg,
-          rgba(250, 250, 250, 1) 25%,
-          rgba(210, 210, 210, 1)
-        ); */
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -44,7 +38,7 @@
         position: relative;
         background-color: #e6e6e6;
       }
-      .shadows,
+      #shadows,
       #numbers {
         height: 70%;
         width: 80%;
@@ -56,6 +50,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        mix-blend-mode: multiply;
       }
       .dot {
         width: 10px;
@@ -93,6 +88,9 @@
         width: 80%;
         height: 10px;
         transition: all 0.1s;
+      }
+      .branch.flash {
+        animation: flash 1s linear infinite;
       }
       .up {
         top: 0;
@@ -134,27 +132,29 @@
       }
       .branch::before {
         right: 100%;
-        /* border-right: 5px solid #000; */
       }
       .branch::after {
         left: 100%;
-        /* border-left: 5px solid #000; */
       }
-      .shadows .branch {
+      #shadows .branch {
         background-color: #d0d0d0;
+        border-color: #d0d0d0;
       }
-      .shadows .branch::before {
+      #shadows .branch::before {
         border-right: 5px solid #d0d0d0;
       }
-      .shadows .branch::after {
+      #shadows .branch::after {
         border-left: 5px solid #d0d0d0;
       }
       .light {
         background-color: #000000;
+        border-color: #000000;
       }
-      .lam .active,
-      .frame .active .lamp {
-        background: radial-gradient(#d54343cf, #c45059a1, #e9b3b885);
+      #numbers .branch.light::before {
+        border-right: 5px solid #000000;
+      }
+      #numbers .branch.light::after {
+        border-left: 5px solid #000000;
       }
       .clock-icon {
         width: 8%;
@@ -177,6 +177,7 @@
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
+        cursor: pointer;
       }
       .btn {
         width: 100%;
@@ -195,6 +196,7 @@
         width: 100%;
         height: 12%;
         padding-top: 5px;
+        padding-bottom: 5px;
         box-sizing: border-box;
         font-size: 2vw;
         color: #d0d0d0;
@@ -209,6 +211,24 @@
       .week-light {
         color: #000000;
         text-shadow: 1px 1px 2px #494949;
+      }
+      .screen .lamp {
+        width: 100%;
+        height: 100%;
+      }
+      .screen .lamp.set {
+        background: radial-gradient(#d54343cf, #c45059a1, #e9b3b885);
+      }
+      .screen .lamp.active {
+        background: radial-gradient(#d54343cf, #c45059a1, #e9b3b885);
+        animation: flash 1s linear infinite;
+      }
+      .clock-icon.active {
+        animation: flash 1s linear 0.5s infinite;
+      }
+      img,
+      span {
+        user-select: none;
       }
       /* 动画部分 */
 
@@ -227,7 +247,7 @@
       <div class="screen">
         <div class="lamp"></div>
         <!-- 设置时间 -->
-        <div class="shadows">
+        <div id="shadows">
           <div class="number">
             <div class="branch up center"></div>
             <div class="branch up left"></div>
@@ -364,47 +384,46 @@
       </div>
       <!-- 设置按钮 -->
       <div class="buttons">
-        <div class="btn set-clock">
+        <div class="btn set-clock" onclick="setClock()">
           <img class="img" src="./imgs/clover.png" alt="" />
         </div>
-        <div class="btn time-up">
+        <div class="btn time-up" onclick="clickUp()">
           <img class="img" src="./imgs/arrow-up.png" alt="" />
         </div>
-        <div class="btn time-down">
+        <div class="btn time-down" onclick="clickDown()">
           <img class="img" src="./imgs/arrow-down.png" alt="" />
         </div>
       </div>
     </div>
+    <script src="https://cdn.bootcss.com/lodash.js/4.17.15/lodash.core.min.js"></script>
     <script src="./index.js"></script>
     <script>
+      let setclock = false,
+        isclock = false;
+      let clockstatus = -1;
+      let time = null,
+        _time = [],
+        time2 = [0, 0, 0],
+        _time2 = [];
+      let currentNum = 0;
+      let TIME = null;
+      let lamp = document.getElementsByClassName('lamp')[0];
+      let clockIcon = document.getElementsByClassName('clock-icon')[0];
       window.requestAnimationFrame(refreshTime);
-      // ;(function render() {
-      //   refreshTime()
-      // })()
-      refreshTime();
       //加类名
-      function addClassName(index, num) {
+      function addClassName(index, num, className) {
         let lightClass = tubeMap[num];
-        console.log('----------------', lightClass);
         lightClass.forEach((element) => {
           let el = document.getElementById('numbers').getElementsByClassName(element)[index];
-          el.classList.add('light');
-          // document.styleSheets[0].insertRule(
-          //   ".branch::before{border-right: 5px solid #000000;}",
-          //   0
-          // ) //chrome,firefox
+          el.classList.add(className);
         });
       }
       //删类名
-      function removeClassName(index, num) {
+      function removeClassName(index, num, className) {
         let lightClass = tubeMap[num];
         lightClass.forEach((element) => {
           let el = document.getElementById('numbers').getElementsByClassName(element)[index];
-          el.classList.remove('light');
-          // document.styleSheets[0].insertRule(
-          //   ".branch::before{border-right: 5px solid #000000;}",
-          //   0
-          // ) //chrome,firefox
+          el.classList.remove(className);
         });
       }
       //刷新时间
@@ -412,38 +431,206 @@
         let myDate = new Date(),
           day = myDate.getDay();
         time = myDate.toLocaleTimeString('en');
-        console.log(time, day); //时间格式 2:19:34 PM
+        // console.log(time, day); //时间格式 2:19:34 PM
         //显示星期几
         let nowDay = document.getElementsByClassName('dayOfWeek')[day];
         nowDay.classList.add('week-light');
         //显示上午下午
-        console.log(time.match(/AM|PM/));
         if (time.match(/AM|PM/) == 'AM') {
           document.getElementById('pm').style.display = 'none';
         } else {
           document.getElementById('am').style.display = 'none';
         }
         //显示hh:mm:ss
-        let _time = time.slice(0, time.length - 3).split(':');
-        console.log(_time);
+        _time = time
+          .slice(0, time.length - 3)
+          .split(':')
+          .join('')
+          .split('');
+        if (_time.length === 5) {
+          _time.unshift('0');
+        }
+        TIME = requestAnimationFrame(refreshTime);
+        console.log('time-----------', time);
+        onClock();
+        if (setclock || (isclock && !setclock)) {
+          return;
+        }
         _time.forEach((element, index) => {
-          if (element < 10) {
-            addClassName(index * 2, 0);
-            addClassName(index + 1, element);
+          if (element == '0') {
+            addClassName(index, 0, 'light');
             setTimeout(() => {
-              removeClassName(index * 2, 0);
-              removeClassName(index + 1, element);
+              removeClassName(index, 0, 'light');
             }, 900);
           } else {
-            addClassName(index * 2, parseInt(element / 10));
-            addClassName(index * 2 + 1, element % 10);
+            addClassName(index, element, 'light');
             setTimeout(() => {
-              removeClassName(index * 2, parseInt(element / 10));
-              removeClassName(index * 2 + 1, element % 10);
+              removeClassName(index, element, 'light');
             }, 900);
           }
         });
-        window.requestAnimationFrame(refreshTime);
+      }
+      // 设置闹钟状态
+      function setClock() {
+        if (setclock === false) {
+          lamp.classList.add('set');
+          setclock = true;
+          // window.cancelAnimationFrame(TIME);
+          if (_time2.length === 0) {
+            _time2 = ['0', '0', '0', '0', '0', '0'];
+          }
+          setTimeout(() => {
+            _time2.forEach((element, index) => {
+              addClassName(index, element, 'light');
+            });
+          }, 900);
+        } else {
+          clockstatus++;
+          currentNum = time2[clockstatus];
+          console.log('clockstatus------------', clockstatus);
+          if (clockstatus == 3) {
+            setclock = false;
+            lamp.classList.remove('set');
+            _time2.forEach((element, index) => {
+              removeClassName(index, 8, 'flash');
+            });
+            _time2.forEach((element, index) => {
+              removeClassName(index, element, 'light');
+            });
+            clockstatus = -1;
+            // window.requestAnimationFrame(refreshTime);
+            return;
+          }
+          if (clockstatus > 0) {
+            removeClassName(clockstatus * 2 - 2, _time2[clockstatus * 2 - 2], 'flash');
+            removeClassName(clockstatus * 2 - 1, _time2[clockstatus * 2 - 1], 'flash');
+          }
+          addClassName(clockstatus * 2, 8, 'flash');
+          addClassName(clockstatus * 2 + 1, 8, 'flash');
+        }
+      }
+      //判断闹钟是否响
+      function onClock() {
+        isclock = _.isEqual(_time, _time2);
+        if (isclock && !setclock) {
+          lamp.classList.add('active');
+          clockIcon.classList.add('active');
+          setTimeout(() => {
+            lamp.classList.remove('active');
+            clockIcon.classList.remove('active');
+            isclock = false;
+          }, 10000);
+        }
+      }
+      //查看闹钟时间
+      function checkClock() {
+        if (_time2.length === 0) {
+          return;
+        }
+        setclock = true;
+        lamp.classList.add('set');
+        _time2.forEach((element, index) => {
+          removeClassName(index, 8, 'light');
+          setTimeout(() => {
+            addClassName(index, element, 'light');
+          }, 1000);
+        });
+        setTimeout(() => {
+          lamp.classList.remove('set');
+          _time2.forEach((element, index) => {
+            removeClassName(index, 8, 'light');
+          });
+          setclock = false;
+        }, 4000);
+      }
+      // 设置闹钟时间
+      //上调
+      function clickUp() {
+        if (!setclock) {
+          checkClock();
+          return;
+        }
+        if (clockstatus < 0) {
+          return;
+        }
+        currentNum++;
+        switch (clockstatus) {
+          case 0:
+            if (currentNum == 13) {
+              currentNum = 1;
+            }
+            _time2[0] = '' + parseInt(currentNum / 10);
+            _time2[1] = '' + (currentNum % 10);
+            time2[0] = currentNum;
+            break;
+          case 1:
+            if (currentNum == 60) {
+              currentNum = 1;
+            }
+            _time2[2] = '' + parseInt(currentNum / 10);
+            _time2[3] = '' + (currentNum % 10);
+            time2[1] = currentNum;
+            break;
+          case 2:
+            if (currentNum == 60) {
+              currentNum = 1;
+            }
+            _time2[4] = '' + parseInt(currentNum / 10);
+            _time2[5] = '' + (currentNum % 10);
+            time2[2] = currentNum;
+            break;
+          default:
+            break;
+        }
+        console.log('currentNum-----', currentNum);
+        removeClassName(clockstatus * 2, 8, 'light');
+        removeClassName(clockstatus * 2 + 1, 8, 'light');
+        addClassName(clockstatus * 2, parseInt(currentNum / 10), 'light');
+        addClassName(clockstatus * 2 + 1, currentNum % 10, 'light');
+      }
+      //下调
+      function clickDown() {
+        if (!setclock) {
+          checkClock();
+          return;
+        }
+        if (clockstatus < 0) {
+          return;
+        }
+        currentNum--;
+        switch (clockstatus) {
+          case 0:
+            if (currentNum < 1) {
+              currentNum = 12;
+            }
+            _time2[0] = '' + parseInt(currentNum / 10);
+            _time2[1] = '' + (currentNum % 10);
+            time2[0] = currentNum;
+            break;
+          case 1:
+            if (currentNum < 0) {
+              currentNum = 59;
+            }
+            _time2[2] = '' + parseInt(currentNum / 10);
+            _time2[3] = '' + (currentNum % 10);
+            time2[1] = currentNum;
+            break;
+          case 2:
+            if (currentNum < 0) {
+              currentNum = 59;
+            }
+            _time2[4] = '' + parseInt(currentNum / 10);
+            _time2[5] = '' + (currentNum % 10);
+            time2[2] = currentNum;
+            break;
+          default:
+            break;
+        }
+        console.log('currentNum-----', currentNum);
+        removeClassName(clockstatus * 2, 8, 'light');
+        removeClassName(clockstatus * 2 + 1, 8, 'light');
+        addClassName(clockstatus * 2, parseInt(currentNum / 10), 'light');
+        addClassName(clockstatus * 2 + 1, currentNum % 10, 'light');
       }
     </script>
   </body>
