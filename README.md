@@ -20,6 +20,7 @@
 - [加载动画](http://sukura9527.github.io/fancy-web/加载动画)
 - [svg 渐变](http://sukura9527.github.io/fancy-web/svg渐变)
 - [火焰效果](http://sukura9527.github.io/fancy-web/火焰效果)
+- [电子钟](http://sukura9527.github.io/fancy-web/电子钟)
 
 # 有趣的 canvas
 
