@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" style="background-color: #000"></canvas>
+  </body>
+  <script>
+    const myCanvas = document.getElementById("myCanvas");
+    const ctx = myCanvas.getContext("2d");
+    myCanvas.width = window.innerWidth;
+    myCanvas.height = window.innerHeight;
+
+    function createPonint(x, y, r) {
+      ctx.beginPath();
+      let R = r || 4;
+      let X = x || getRandomInt(R, myCanvas.width - R);
+      let Y = y || getRandomInt(R, myCanvas.height - R);
+      ctx.arc(X, Y, R, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+      return {
+        x: X,
+        y: Y,
+        r: R,
+      };
+    }
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min; // 包含min和max
+    }
+    const points = [];
+    for (let i = 0; i < 100; i++) {
+      let point = createPonint();
+      point.vx = getRandomInt(-1, 1);
+      point.vy = getRandomInt(-1, 1);
+      points.push(point);
+    }
+    function getDistance(a, b) {
+      return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+    }
+    function animate() {
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      for (let i = 0; i < points.length; i++) {
+        points[i].x += points[i].vx;
+        points[i].y += points[i].vy;
+        if (
+          points[i].x + points[i].r > myCanvas.width ||
+          points[i].x - points[i].r < 0
+        ) {
+          points[i].vx *= -1; // 反转水平速度
+        }
+        if (
+          points[i].y + points[i].r > myCanvas.height ||
+          points[i].y - points[i].r < 0
+        ) {
+          points[i].vy *= -1; // 反转垂直速度
+        }
+
+        createPonint(points[i].x, points[i].y, points[i].r);
+        for (let j = 1; j < points.length; j++) {
+          const maxDistance = 200;
+          let distance = getDistance(points[i], points[j]);
+          if (distance > maxDistance) continue;
+          ctx.beginPath();
+          ctx.moveTo(points[i].x, points[i].y); // Start point
+          ctx.lineTo(points[j].x, points[j].y); // Line to
+          ctx.strokeStyle = `rgba(255,255,255,${(
+            (maxDistance - distance) /
+            maxDistance
+          ).toFixed(2)})`; // Stroke color
+          ctx.lineWidth = 2;
+          ctx.closePath(); // Close path (optional)
+          ctx.stroke();
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</html>

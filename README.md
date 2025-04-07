@@ -31,3 +31,5 @@
   - [李萨如螺线](http://sukura9527.github.io/fancy-web/李萨如螺线)
 - ball。。。
   - [canvas 倒计时动画](http://sukura9527.github.io/fancy-web/canvas倒计时动画)
+- 粒子系统
+  - [粒子系统](http://sukura9527.github.io/fancy-web/粒子系统)
