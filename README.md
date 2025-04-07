@@ -16,7 +16,6 @@
 - [图片拼接](http://sukura9527.github.io/fancy-web/图片拼接)
 - [文本像素动画 2](http://sukura9527.github.io/fancy-web/文本像素动画2)
 - [摩擦动画](http://sukura9527.github.io/fancy-web/摩擦动画)
-- [canvas 绘画基础 2](http://sukura9527.github.io/fancy-web/canvas绘画基础2)
 - [加载动画](http://sukura9527.github.io/fancy-web/加载动画)
 - [svg 渐变](http://sukura9527.github.io/fancy-web/svg渐变)
 - [火焰效果](http://sukura9527.github.io/fancy-web/火焰效果)
